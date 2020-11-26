@@ -1,0 +1,20 @@
+{
+  "name": "serverless-appointment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node_modules/.bin/nodemon serverless offline start --skipCacheInvalidation"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.10.16",
+    "nodemon": "^2.0.6"
+  },
+  "devDependencies": {
+    "serverless-offline-plus-static": "^1.0.4"
+  }
+}

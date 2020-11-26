@@ -1,0 +1,53 @@
+service: aws-scheduling-api
+
+frameworkVersion: "2"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+plugins:
+  - serverless-offline
+  - serverless-offline-plus-static
+
+custom:
+  localDevStaticFolder: path/to/static/files
+
+functions:
+  hello:
+    handler: handler.hello
+  create:
+    handler: handler.create
+    events:
+      - http:
+          path: schedule
+          method: post
+          cors: true
+  getOne:
+    handler: handler.getOne
+    events:
+      - http:
+          path: schedule/{id}
+          method: get
+          cors: true
+  getAll:
+    handler: handler.getAll
+    events:
+      - http:
+          path: schedule
+          method: get
+          cors: true
+  update:
+    handler: handler.update
+    events:
+      - http:
+          path: schedule/{id}
+          method: put
+          cors: true
+  delete:
+    handler: handler.delete
+    events:
+      - http:
+          path: schedule/{id}
+          method: delete
+          cors: true
