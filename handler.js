@@ -4,12 +4,7 @@ dotenv.config();
 
 const connectToDatabase = require("./src/lib/database");
 
-const Schedule = require("./src/models/schedule");
-
-module.exports.hello = (event, context, callback) => {
-  console.log("Hello World");
-  callback(null, "Hello World");
-};
+const Schedule = require("./src/models/schedules");
 
 module.exports.create = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;

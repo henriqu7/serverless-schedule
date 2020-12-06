@@ -14,8 +14,6 @@ custom:
   localDevStaticFolder: path/to/static/files
 
 functions:
-  hello:
-    handler: handler.hello
   create:
     handler: handler.create
     events:
