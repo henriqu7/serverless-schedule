@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 
-const ScheduleSchema = new mongoose.Schema({
+const ScheduleRequestSchema = new mongoose.Schema({
   room_number: Number,
   date: {
     checkin: Date,
     checkout: Date,
   },
-  guests: Number,
   status: Boolean,
 });
-module.exports = mongoose.model("Schedule", ScheduleSchema);
+module.exports = mongoose.model("ScheduleRequest", ScheduleRequestSchema);

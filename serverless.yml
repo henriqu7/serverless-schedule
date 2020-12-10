@@ -14,38 +14,52 @@ custom:
   localDevStaticFolder: path/to/static/files
 
 functions:
-  create:
-    handler: handler.create
+  createSchedule:
+    handler: src/handlers/scheduleHandler.create
     events:
       - http:
           path: schedule
           method: post
           cors: true
-  getOne:
-    handler: handler.getOne
+  getOneSchedule:
+    handler: src/handlers/scheduleHandler.getOne
     events:
       - http:
           path: schedule/{id}
           method: get
           cors: true
-  getAll:
-    handler: handler.getAll
+  getAllSchedule:
+    handler: src/handlers/scheduleHandler.getAll
     events:
       - http:
           path: schedule
           method: get
           cors: true
-  update:
-    handler: handler.update
+  updateSchedule:
+    handler: src/handlers/scheduleHandler.update
     events:
       - http:
           path: schedule/{id}
           method: put
           cors: true
-  delete:
-    handler: handler.delete
+  deleteSchedule:
+    handler: src/handlers/scheduleHandler.delete
     events:
       - http:
           path: schedule/{id}
           method: delete
+          cors: true
+  createRoom:
+    handler: src/handlers/roomHandler.create
+    events:
+      - http:
+          path: room
+          method: post
+          cors: true
+  createScheduleRequest:
+    handler: src/handlers/scheduleRequestHandler.create
+    events:
+      - http:
+          path: schedulerequest
+          method: post
           cors: true
