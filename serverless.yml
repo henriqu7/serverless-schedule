@@ -14,13 +14,6 @@ custom:
   localDevStaticFolder: path/to/static/files
 
 functions:
-  createSchedule:
-    handler: src/handlers/scheduleHandler.create
-    events:
-      - http:
-          path: schedule
-          method: post
-          cors: true
   getOneSchedule:
     handler: src/handlers/scheduleHandler.getOne
     events:

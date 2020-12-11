@@ -7,27 +7,6 @@ const connectToDatabase = require("../lib/database");
 const Schedule = require("../models/schedules");
 const ScheduleRequest = require("../models/scheduleRequests");
 
-module.exports.create = (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
-
-  connectToDatabase().then(() => {
-    Schedule.create(JSON.parse(event.body))
-      .then((object) =>
-        callback(null, {
-          statusCode: 200,
-          body: JSON.stringify(object),
-        })
-      )
-      .catch((err) =>
-        callback(null, {
-          statusCode: err.statusCode || 500,
-          headers: { "Content-Type": "text/plain" },
-          body: "Could not create the note.",
-        })
-      );
-  });
-};
-
 module.exports.confirmScheduleRequest = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 

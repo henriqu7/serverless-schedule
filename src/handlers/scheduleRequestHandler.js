@@ -28,7 +28,7 @@ module.exports.create = (event, context, callback) => {
               from ${object.date.checkin} 
               to ${object.date.checkout} 
               in the room number ${object.room_number}. 
-              Do you want accept? http://71ca398c7899.ngrok.io/dev/confirmschedulerequest/${object.id}`,
+              Do you want accept? http://cc70bf3cb36a.ngrok.io/dev/confirmschedulerequest/${object.id}`,
             from: "whatsapp:+14155238886",
             to: "whatsapp:+5511973873399",
           });
