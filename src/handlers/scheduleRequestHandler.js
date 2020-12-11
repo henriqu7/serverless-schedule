@@ -3,6 +3,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const connectToDatabase = require("../lib/database");
+const twilioClient = require("twilio")(
+  process.env.TWILIO_ACCOUNT,
+  process.env.TWILIO_TOKEN
+);
 
 const ScheduleRequest = require("../models/scheduleRequests");
 const Room = require("../models/rooms");
@@ -16,10 +20,18 @@ module.exports.create = (event, context, callback) => {
       room_number: body.room_number,
     });
 
-    console.log(room);
     if (room.status) {
       ScheduleRequest.create(JSON.parse(event.body))
-        .then(() => {
+        .then((object) => {
+          twilioClient.messages.create({
+            body: `Hey! You have a new schedule! 
+              from ${object.date.checkin} 
+              to ${object.date.checkout} 
+              in the room number ${object.room_number}. 
+              Do you want accept? http://71ca398c7899.ngrok.io/dev/confirmschedulerequest/${object.id}`,
+            from: "whatsapp:+14155238886",
+            to: "whatsapp:+5511973873399",
+          });
           Room.findOneAndUpdate(room.room_number, {
             status: false,
           }).then((object) => {
@@ -62,7 +74,7 @@ module.exports.getOne = (event, context, callback) => {
         callback(null, {
           statusCode: err.statusCode || 500,
           headers: { "Content-Type": "text/plain" },
-          body: "Could not fetch the note.",
+          body: "Could not fetch the scheduleRequest.",
         })
       );
   });
@@ -110,7 +122,7 @@ module.exports.update = (event, context, callback) => {
         callback(null, {
           statusCode: err.statusCode || 500,
           headers: { "Content-Type": "text/plain" },
-          body: "Could not fetch the notes.",
+          body: "Could not fetch the schedule requests.",
         })
       );
   });
@@ -134,7 +146,7 @@ module.exports.delete = (event, context, callback) => {
         callback(null, {
           statusCode: err.statusCode || 500,
           headers: { "Content-Type": "text/plain" },
-          body: "Could not fetch the notes.",
+          body: "Could not fetch the schedule requests",
         })
       );
   });

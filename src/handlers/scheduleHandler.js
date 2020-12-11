@@ -5,6 +5,7 @@ dotenv.config();
 const connectToDatabase = require("../lib/database");
 
 const Schedule = require("../models/schedules");
+const ScheduleRequest = require("../models/scheduleRequests");
 
 module.exports.create = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -22,6 +23,37 @@ module.exports.create = (event, context, callback) => {
           statusCode: err.statusCode || 500,
           headers: { "Content-Type": "text/plain" },
           body: "Could not create the note.",
+        })
+      );
+  });
+};
+
+module.exports.confirmScheduleRequest = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  console.log(event.pathParameters.id);
+
+  connectToDatabase().then(() => {
+    ScheduleRequest.findById(event.pathParameters.id)
+      .then((object) => {
+        console.log(object);
+        let schemaSchedule = {
+          room_number: object.room_number,
+          date: object.date,
+          status: object.status,
+        };
+        Schedule.create(schemaSchedule).then((schedule) => {
+          callback(null, {
+            statusCode: 200,
+            body: JSON.stringify(schedule),
+          });
+        });
+      })
+      .catch((err) =>
+        callback(null, {
+          statusCode: err.statusCode || 500,
+          headers: { "Content-Type": "text/plain" },
+          body: "Could not fetch the ScheduleRequest.",
         })
       );
   });

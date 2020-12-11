@@ -63,3 +63,10 @@ functions:
           path: schedulerequest
           method: post
           cors: true
+  confirmScheduleRequest:
+    handler: src/handlers/scheduleHandler.confirmScheduleRequest
+    events:
+      - http:
+          path: confirmschedulerequest/{id}
+          method: get
+          cors: true

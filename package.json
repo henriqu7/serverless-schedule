@@ -12,7 +12,8 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "mongoose": "^5.10.16",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "twilio": "^3.54.0"
   },
   "devDependencies": {
     "serverless-offline-plus-static": "^1.0.4"
