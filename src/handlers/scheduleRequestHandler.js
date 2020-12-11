@@ -24,11 +24,8 @@ module.exports.create = (event, context, callback) => {
       ScheduleRequest.create(JSON.parse(event.body))
         .then((object) => {
           twilioClient.messages.create({
-            body: `Hey! You have a new schedule! 
-              from ${object.date.checkin} 
-              to ${object.date.checkout} 
-              in the room number ${object.room_number}. 
-              Do you want accept? http://cc70bf3cb36a.ngrok.io/dev/confirmschedulerequest/${object.id}`,
+            body: `Hey! You have a new schedule! from ${object.date.checkin} to ${object.date.checkout} in the room number ${object.room_number}. 
+            Do you want accept? ${process.env.SERVERLESS_URL}/dev/confirmschedulerequest/${object.id}`,
             from: "whatsapp:+14155238886",
             to: "whatsapp:+5511973873399",
           });
