@@ -6,6 +6,7 @@ const ScheduleRequestSchema = new mongoose.Schema({
     checkin: Date,
     checkout: Date,
   },
+  guests: Number,
   status: Boolean,
 });
 module.exports = mongoose.model("ScheduleRequest", ScheduleRequestSchema);
