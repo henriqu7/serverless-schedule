@@ -16,43 +16,28 @@ module.exports.create = (event, context, callback) => {
   let body = JSON.parse(event.body);
 
   connectToDatabase().then(async () => {
-    let room = await Room.findOne({
-      room_number: body.room_number,
-    });
-
-    if (room.status) {
-      ScheduleRequest.create(JSON.parse(event.body))
-        .then((object) => {
-          twilioClient.messages.create({
-            body: `Hey! You have a new schedule! from ${object.date.checkin} to ${object.date.checkout} in the room number ${object.room_number}. 
-            Do you want accept? ${process.env.SERVERLESS_URL}/dev/confirmschedulerequest/${object.id}`,
-            from: "whatsapp:+14155238886",
-            to: "whatsapp:+5511973873399",
-          });
-          Room.findOneAndUpdate(room.room_number, {
-            status: false,
-          }).then((object) => {
-            callback(null, {
-              statusCode: 200,
-              headers: { "Content-Type": "text/plain" },
-              body: JSON.stringify(object),
-            });
-          });
-        })
-        .catch((err) => {
-          callback(null, {
-            statusCode: err.statusCode || 500,
-            headers: { "Content-Type": "text/plain" },
-            body: "Could not create the schedule request.",
-          });
+    ScheduleRequest.create(JSON.parse(event.body))
+      .then((object) => {
+        twilioClient.messages.create({
+          body: `Hey! You have a new schedule! from ${object.date.checkin} to ${object.date.checkout} in a ${object.room_type} room.
+          Send message to the guest https://api.whatsapp.com/send?phone=${object.guest_contact}&text=Hi!%20is%20about%20your%20reservation%20in%20cocoknots
+          Do you want accept? ${process.env.SERVERLESS_URL}/dev/confirmschedulerequest/${object.id}`,
+          from: "whatsapp:+14155238886",
+          to: "whatsapp:+5511973873399",
         });
-    } else {
-      callback(null, {
-        statusCode: 400,
-        headers: { "Content-Type": "text/plain" },
-        body: "Room unvailable.",
+        callback(null, {
+          statusCode: 200,
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify(object),
+        });
+      })
+      .catch((err) => {
+        callback(null, {
+          statusCode: err.statusCode || 500,
+          headers: { "Content-Type": "text/plain" },
+          body: "Could not create the schedule request.",
+        });
       });
-    }
   });
 };
 

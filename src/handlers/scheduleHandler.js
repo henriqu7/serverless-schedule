@@ -17,7 +17,8 @@ module.exports.confirmScheduleRequest = (event, context, callback) => {
       .then((object) => {
         console.log(object);
         let schemaSchedule = {
-          room_number: object.room_number,
+          room_type: object.room_type,
+          guest_contact: object.guest_contact,
           date: object.date,
           status: object.status,
         };
