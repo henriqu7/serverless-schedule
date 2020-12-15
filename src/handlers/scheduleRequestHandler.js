@@ -13,13 +13,12 @@ const Room = require("../models/rooms");
 
 module.exports.create = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  let body = JSON.parse(event.body);
 
   connectToDatabase().then(async () => {
     ScheduleRequest.create(JSON.parse(event.body))
       .then((object) => {
         twilioClient.messages.create({
-          body: `Hey! You have a new schedule! from ${object.date.checkin} to ${object.date.checkout} in a ${object.room_type} room.
+          body: `Hey! You have a new schedule! from ${object.date.checkin} to ${object.date.checkout} in a ${object.room_type} for ${object.guests} guests.
           Send message to the guest https://api.whatsapp.com/send?phone=${object.guest_contact}&text=Hi!%20is%20about%20your%20reservation%20in%20cocoknots
           Do you want accept? ${process.env.SERVERLESS_URL}/dev/confirmschedulerequest/${object.id}`,
           from: "whatsapp:+14155238886",
