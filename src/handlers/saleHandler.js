@@ -5,18 +5,39 @@ dotenv.config();
 const connectToDatabase = require("../lib/database");
 
 const Sale = require("../models/sales");
+const Product = require("../models/products");
 
 module.exports.create = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
+  const data = JSON.parse(event.body);
+  const products = data.products;
+
   connectToDatabase().then(() => {
-    Product.create(JSON.parse(event.body))
-      .then((object) =>
+    Sale.create(JSON.parse(event.body))
+      .then(() => {
+        products.forEach((element) => {
+          console.log(element);
+          Product.findByIdAndUpdate(element.id, {
+            $inc: { quantity: -element.quantity },
+          })
+            .then((object) => {
+              console.log("Inserted: ", object);
+            })
+            .catch((err) =>
+              callback(null, {
+                statusCode: err.statusCode || 500,
+                headers: { "Content-Type": "text/plain" },
+                body: "Could not update the product.",
+              })
+            );
+        });
         callback(null, {
           statusCode: 200,
-          body: JSON.stringify(object),
-        })
-      )
+          headers: { "Content-Type": "text/plain" },
+          body: "Sale created",
+        });
+      })
       .catch((err) =>
         callback(null, {
           statusCode: err.statusCode || 500,
@@ -31,7 +52,7 @@ module.exports.getOne = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   connectToDatabase().then(() => {
-    Product.findById(event.pathParameters.id)
+    Sale.findById(event.pathParameters.id)
       .then((object) =>
         callback(null, {
           statusCode: 200,
@@ -52,7 +73,7 @@ module.exports.getAll = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   connectToDatabase().then(() => {
-    Product.find()
+    Sale.find()
       .then((object) =>
         callback(null, {
           statusCode: 200,
@@ -73,7 +94,7 @@ module.exports.update = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   connectToDatabase().then(() => {
-    Product.findByIdAndUpdate(event.pathParameters.id, JSON.parse(event.body), {
+    Sale.findByIdAndUpdate(event.pathParameters.id, JSON.parse(event.body), {
       new: true,
     })
       .then((object) =>

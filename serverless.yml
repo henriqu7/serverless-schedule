@@ -86,3 +86,10 @@ functions:
           path: product
           method: post
           cors: true
+  createSale:
+    handler: src/handlers/saleHandler.create
+    events:
+      - http:
+          path: sale
+          method: post
+          cors: true

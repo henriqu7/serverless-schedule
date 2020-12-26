@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
 const SaleSchema = new mongoose.Schema({
-  name: String,
-  price: Number,
+  guest_name: String,
+  room_number: Number,
   quantity: Number,
-  image_url: String,
+  date: Date,
+  products: Array,
+  total_price: Number,
   status: Boolean,
 });
 module.exports = mongoose.model("Sale", SaleSchema);
