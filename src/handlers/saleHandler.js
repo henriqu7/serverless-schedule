@@ -37,7 +37,10 @@ module.exports.create = (event, context, callback) => {
         });
         callback(null, {
           statusCode: 200,
-          headers: { "Content-Type": "text/plain" },
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": true,
+          },
           body: "Sale created",
         });
       })
