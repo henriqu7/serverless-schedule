@@ -20,23 +20,14 @@ functions:
       - http:
           path: schedule/{id}
           method: get
-          cors:
-            origin: "*" # <-- Specify allowed origin
-            headers: # <-- Specify allowed headers
-              - Content-Type
-              - X-Amz-Date
-              - Authorization
-              - X-Api-Key
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-            allowCredentials: true
+          cors: true
   getAllSchedule:
     handler: src/handlers/scheduleHandler.getAll
     events:
       - http:
           path: schedule
           method: get
-          cors: false
+          cors: true
   updateSchedule:
     handler: src/handlers/scheduleHandler.update
     events:
@@ -85,6 +76,13 @@ functions:
       - http:
           path: product
           method: post
+          cors: true
+  getAllSale:
+    handler: src/handlers/saleHandler.getAll
+    events:
+      - http:
+          path: sale
+          method: get
           cors: true
   createSale:
     handler: src/handlers/saleHandler.create
