@@ -24,7 +24,7 @@ module.exports.create = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not create the note.",
+          body: "Could not create the product.",
         })
       );
   });
@@ -38,6 +38,10 @@ module.exports.getOne = (event, context, callback) => {
       .then((object) =>
         callback(null, {
           statusCode: 200,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": true,
+          },
           body: JSON.stringify(object),
         })
       )
@@ -45,7 +49,7 @@ module.exports.getOne = (event, context, callback) => {
         callback(null, {
           statusCode: err.statusCode || 500,
           headers: { "Content-Type": "text/plain" },
-          body: "Could not fetch the note.",
+          body: "Could not fetch the product.",
         })
       );
   });
@@ -70,7 +74,7 @@ module.exports.getAll = (event, context, callback) => {
         callback(null, {
           statusCode: err.statusCode || 500,
           headers: { "Content-Type": "text/plain" },
-          body: "Could not fetch the Room.",
+          body: "Could not fetch the product.",
         })
       );
   });
@@ -90,6 +94,10 @@ module.exports.update = (event, context, callback) => {
       .then((object) =>
         callback(null, {
           statusCode: 200,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": true,
+          },
           body: JSON.stringify(object),
         })
       )
@@ -100,7 +108,7 @@ module.exports.update = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the notes.",
+          body: "Could not fetch the product.",
         })
       );
   });
@@ -131,7 +139,7 @@ module.exports.delete = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the notes.",
+          body: "Could not fetch the product.",
         })
       );
   });
