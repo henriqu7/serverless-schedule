@@ -78,10 +78,14 @@ module.exports.getAll = (event, context, callback) => {
 
 module.exports.update = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
+  let data = JSON.parse(event.body);
 
   connectToDatabase().then(() => {
     Product.findByIdAndUpdate(event.pathParameters.id, JSON.parse(event.body), {
-      new: true,
+      name: data.name,
+      price: data.price,
+      quantity: data.quantity,
+      image_url: data.image_url,
     })
       .then((object) =>
         callback(null, {

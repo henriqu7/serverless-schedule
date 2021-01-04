@@ -70,12 +70,26 @@ functions:
           path: product
           method: get
           cors: true
+  getOneProduct:
+    handler: src/handlers/productHandler.getOne
+    events:
+      - http:
+          path: product/{id}
+          method: get
+          cors: true
   createProduct:
     handler: src/handlers/productHandler.create
     events:
       - http:
           path: product
           method: post
+          cors: true
+  updateProduct:
+    handler: src/handlers/productHandler.update
+    events:
+      - http:
+          path: product/{id}
+          method: put
           cors: true
   getAllSale:
     handler: src/handlers/saleHandler.getAll
