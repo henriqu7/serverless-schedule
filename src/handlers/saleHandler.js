@@ -14,46 +14,62 @@ module.exports.create = (event, context, callback) => {
   const products = data.products;
 
   connectToDatabase().then(() => {
-    Sale.create(JSON.parse(event.body))
-      .then(() => {
-        products.forEach((element) => {
-          console.log(element);
-          Product.findByIdAndUpdate(element.id, {
-            $inc: { quantity: -element.quantity },
-          })
-            .then((object) => {
-              console.log("Inserted: ", object);
-            })
-            .catch((err) =>
-              callback(null, {
-                statusCode: err.statusCode || 500,
-                headers: {
-                  "Access-Control-Allow-Origin": "*",
-                  "Access-Control-Allow-Credentials": true,
-                },
-                body: "Could not update the product.",
+    let total_price = 0;
+    new Promise((resolve, reject) => {
+      products.forEach((element) => {
+        Product.findById(element.id).then((object) => {
+          total_price = total_price + object.price * element.quantity;
+          console.log(total_price);
+          resolve(total_price);
+        });
+      });
+    })
+      .then((sale) => {
+        let tax_employees = (10 / 100) * sale;
+
+        data.total_price = sale + tax_employees;
+        Sale.create(data)
+          .then(() => {
+            products.forEach((element) => {
+              console.log(element);
+              Product.findByIdAndUpdate(element.id, {
+                $inc: { quantity: -element.quantity },
               })
-            );
-        });
-        callback(null, {
-          statusCode: 200,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": true,
-          },
-          body: "Sale created",
-        });
+                .then((object) => {
+                  console.log("Inserted: ", object);
+                })
+                .catch((err) =>
+                  callback(null, {
+                    statusCode: err.statusCode || 500,
+                    headers: {
+                      "Access-Control-Allow-Origin": "*",
+                      "Access-Control-Allow-Credentials": true,
+                    },
+                    body: "Could not update the product.",
+                  })
+                );
+            });
+            callback(null, {
+              statusCode: 200,
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials": true,
+              },
+              body: "Sale created",
+            });
+          })
+          .catch((err) =>
+            callback(null, {
+              statusCode: err.statusCode || 500,
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials": true,
+              },
+              body: "Could not create the note.",
+            })
+          );
       })
-      .catch((err) =>
-        callback(null, {
-          statusCode: err.statusCode || 500,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": true,
-          },
-          body: "Could not create the note.",
-        })
-      );
+      .catch((err) => console.log(err));
   });
 };
 
