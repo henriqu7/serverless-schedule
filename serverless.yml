@@ -91,6 +91,13 @@ functions:
           path: product/{id}
           method: put
           cors: true
+  deleteProduct:
+    handler: src/handlers/productHandler.delete
+    events:
+      - http:
+          path: product/{id}
+          method: delete
+          cors: true
   getAllSale:
     handler: src/handlers/saleHandler.getAll
     events:

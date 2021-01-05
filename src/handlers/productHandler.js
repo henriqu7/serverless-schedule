@@ -131,7 +131,7 @@ module.exports.delete = (event, context, callback) => {
             "Access-Control-Allow-Credentials": true,
           },
           body: JSON.stringify({
-            message: "Removed note with id: " + object._id,
+            message: "Removed product with id: " + object._id,
             note: object,
           }),
         })
