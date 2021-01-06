@@ -17,7 +17,7 @@ module.exports.create = (event, context, callback) => {
     let total_price = 0;
     new Promise((resolve, reject) => {
       products.forEach((element) => {
-        Product.findById(element.id).then((object) => {
+        Product.findOne({ name: element.name }).then((object) => {
           total_price = total_price + object.price * element.quantity;
           console.log(total_price);
           resolve(total_price);
@@ -32,9 +32,12 @@ module.exports.create = (event, context, callback) => {
           .then(() => {
             products.forEach((element) => {
               console.log(element);
-              Product.findByIdAndUpdate(element.id, {
-                $inc: { quantity: -element.quantity },
-              })
+              Product.findOneAndUpdate(
+                { name: element.name },
+                {
+                  $inc: { quantity: -element.quantity },
+                }
+              )
                 .then((object) => {
                   console.log("Inserted: ", object);
                 })
