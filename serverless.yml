@@ -105,6 +105,13 @@ functions:
           path: sale
           method: get
           cors: true
+  getOneSale:
+    handler: src/handlers/saleHandler.getOne
+    events:
+      - http:
+          path: sale/{id}
+          method: get
+          cors: true
   createSale:
     handler: src/handlers/saleHandler.create
     events:

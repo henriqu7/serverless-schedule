@@ -22,7 +22,7 @@ module.exports.create = (event, context, callback) => {
           Send message to the guest https://api.whatsapp.com/send?phone=${object.guest_contact}&text=Hi!%20is%20about%20your%20reservation%20in%20cocoknots
           Do you want accept? ${process.env.SERVERLESS_URL}/dev/confirmschedulerequest/${object.id}`,
           from: "whatsapp:+14155238886",
-          to: "whatsapp:+5511973873399",
+          to: `whatsapp:${process.env.TWILIO_COCOKNOTS}`,
         });
         callback(null, {
           statusCode: 200,

@@ -65,7 +65,7 @@ module.exports.create = (event, context, callback) => {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Credentials": true,
               },
-              body: "Could not create the note.",
+              body: "Could not create the sale.",
             })
           );
       })
@@ -95,7 +95,7 @@ module.exports.getOne = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the note.",
+          body: "Could not fetch the sale.",
         })
       );
   });
@@ -123,7 +123,7 @@ module.exports.getAll = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the Room.",
+          body: "Could not fetch the sales.",
         })
       );
   });
@@ -153,7 +153,7 @@ module.exports.update = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the notes.",
+          body: "Could not fetch the sale.",
         })
       );
   });
@@ -184,7 +184,7 @@ module.exports.delete = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the notes.",
+          body: "Could not fetch the sale.",
         })
       );
   });
