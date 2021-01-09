@@ -60,7 +60,7 @@ module.exports.getOne = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the note.",
+          body: "Could not fetch the schedule.",
         })
       );
   });
@@ -114,7 +114,7 @@ module.exports.update = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the notes.",
+          body: "Could not fetch the schedule.",
         })
       );
   });
@@ -133,7 +133,7 @@ module.exports.delete = (event, context, callback) => {
             "Access-Control-Allow-Credentials": true,
           },
           body: JSON.stringify({
-            message: "Removed note with id: " + object._id,
+            message: "Removed schedule with id: " + object._id,
             note: object,
           }),
         })
@@ -145,7 +145,7 @@ module.exports.delete = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the notes.",
+          body: "Could not fetch the schedules.",
         })
       );
   });

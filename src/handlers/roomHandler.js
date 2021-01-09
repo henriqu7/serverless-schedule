@@ -24,7 +24,7 @@ module.exports.create = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not create the note.",
+          body: "Could not create the room.",
         })
       );
   });
@@ -52,7 +52,7 @@ module.exports.getOne = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the note.",
+          body: "Could not fetch the room.",
         })
       );
   });
@@ -76,7 +76,7 @@ module.exports.getAll = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the Room.",
+          body: "Could not fetch the room.",
         })
       );
   });
@@ -102,7 +102,7 @@ module.exports.update = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the notes.",
+          body: "Could not fetch the room.",
         })
       );
   });
@@ -121,7 +121,7 @@ module.exports.delete = (event, context, callback) => {
             "Access-Control-Allow-Credentials": true,
           },
           body: JSON.stringify({
-            message: "Removed note with id: " + object._id,
+            message: "Removed room with id: " + object._id,
             note: object,
           }),
         })
@@ -133,7 +133,7 @@ module.exports.delete = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not fetch the notes.",
+          body: "Could not fetch the room.",
         })
       );
   });
