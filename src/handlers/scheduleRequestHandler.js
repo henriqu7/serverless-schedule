@@ -8,8 +8,9 @@ const twilioClient = require("twilio")(
   process.env.TWILIO_TOKEN
 );
 
+const communication = require("../helpers/communication");
+
 const ScheduleRequest = require("../models/scheduleRequests");
-const Room = require("../models/rooms");
 
 module.exports.create = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -18,9 +19,7 @@ module.exports.create = (event, context, callback) => {
     ScheduleRequest.create(JSON.parse(event.body))
       .then((object) => {
         twilioClient.messages.create({
-          body: `Hey! You have a new schedule! from ${object.date.checkin} to ${object.date.checkout} in a ${object.room_type} for ${object.guests} guests.
-          Send message to the guest https://api.whatsapp.com/send?phone=${object.guest_contact}&text=Hi!%20is%20about%20your%20reservation%20in%20cocoknots
-          Do you want accept? ${process.env.SERVERLESS_URL}/dev/confirmschedulerequest/${object.id}`,
+          body: communication.generate_whatsapp_message(object),
           from: "whatsapp:+14155238886",
           to: `whatsapp:${process.env.TWILIO_COCOKNOTS}`,
         });
@@ -40,7 +39,7 @@ module.exports.create = (event, context, callback) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true,
           },
-          body: "Could not create the schedule request.",
+          body: JSON.stringify(err),
         });
       });
   });
