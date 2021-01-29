@@ -5,6 +5,7 @@ dotenv.config();
 const connectToDatabase = require("../lib/database");
 
 const Guest = require("../models/guests");
+require("../models/sales");
 
 module.exports.create = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -67,6 +68,7 @@ module.exports.getAll = (event, context, callback) => {
 
   connectToDatabase().then(() => {
     Guest.find()
+      .populate("sales")
       .then((object) =>
         callback(null, {
           statusCode: 200,
@@ -77,7 +79,8 @@ module.exports.getAll = (event, context, callback) => {
           body: JSON.stringify(object),
         })
       )
-      .catch((err) =>
+      .catch((err) => {
+        console.log(err);
         callback(null, {
           statusCode: err.statusCode || 500,
           headers: {
@@ -85,8 +88,8 @@ module.exports.getAll = (event, context, callback) => {
             "Access-Control-Allow-Credentials": true,
           },
           body: "Could not fetch the Guest.",
-        })
-      );
+        });
+      });
   });
 };
 

@@ -6,6 +6,7 @@ const connectToDatabase = require("../lib/database");
 
 const Sale = require("../models/sales");
 const Product = require("../models/products");
+const Guest = require("../models/guests");
 
 module.exports.create = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -15,7 +16,12 @@ module.exports.create = (event, context, callback) => {
 
   connectToDatabase().then(() => {
     Sale.create(data)
-      .then(() => {
+      .then((sale) => {
+        Guest.findByIdAndUpdate(sale.guest, {
+          $push: { sales: sale },
+        }).then((guest) => {
+          console.log("Guest Updated");
+        });
         products.forEach((element) => {
           console.log(element);
           Product.findOneAndUpdate(
@@ -93,6 +99,7 @@ module.exports.getAll = (event, context, callback) => {
 
   connectToDatabase().then(() => {
     Sale.find()
+      .populate("guest")
       .then((object) =>
         callback(null, {
           statusCode: 200,
@@ -103,7 +110,8 @@ module.exports.getAll = (event, context, callback) => {
           body: JSON.stringify(object),
         })
       )
-      .catch((err) =>
+      .catch((err) => {
+        console.log(err);
         callback(null, {
           statusCode: err.statusCode || 500,
           headers: {
@@ -111,8 +119,8 @@ module.exports.getAll = (event, context, callback) => {
             "Access-Control-Allow-Credentials": true,
           },
           body: "Could not fetch the sales.",
-        })
-      );
+        });
+      });
   });
 };
 
