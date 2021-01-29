@@ -119,3 +119,17 @@ functions:
           path: sale
           method: post
           cors: true
+  createGuest:
+    handler: src/handlers/guestHandler.create
+    events:
+      - http:
+          path: guest
+          method: post
+          cors: true
+  getAllGuest:
+    handler: src/handlers/guestHandler.getAll
+    events:
+      - http:
+          path: guest
+          method: get
+          cors: true
