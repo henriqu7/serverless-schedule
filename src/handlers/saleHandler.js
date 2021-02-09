@@ -12,7 +12,8 @@ module.exports.create = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   const data = JSON.parse(event.body);
-  const products = data.products;
+  const product = data.product;
+  const quantity = data.quantity;
 
   connectToDatabase().then(() => {
     Sale.create(data)
@@ -20,37 +21,32 @@ module.exports.create = (event, context, callback) => {
         Guest.findByIdAndUpdate(sale.guest, {
           $push: { sales: sale },
         }).then((guest) => {
-          console.log("Guest Updated");
-        });
-        products.forEach((element) => {
-          console.log(element);
           Product.findOneAndUpdate(
-            { name: element.name },
+            { name: product },
             {
-              $inc: { quantity: -element.quantity },
+              $inc: { quantity: -quantity },
             }
           )
-            .then((object) => {
-              console.log("Inserted: ", object);
-            })
-            .catch((err) =>
+            .then(() => {
               callback(null, {
-                statusCode: err.statusCode || 500,
+                statusCode: 200,
                 headers: {
                   "Access-Control-Allow-Origin": "*",
                   "Access-Control-Allow-Credentials": true,
                 },
-                body: "Could not update the product.",
-              })
-            );
-        });
-        callback(null, {
-          statusCode: 200,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Credentials": true,
-          },
-          body: "Sale created",
+                body: "Sale created",
+              });
+            })
+            .catch((err) => {
+              callback(null, {
+                statusCode: 500,
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Access-Control-Allow-Credentials": true,
+                },
+                body: "Error to update product",
+              });
+            });
         });
       })
       .catch((err) =>
@@ -71,6 +67,7 @@ module.exports.getOne = (event, context, callback) => {
 
   connectToDatabase().then(() => {
     Sale.findById(event.pathParameters.id)
+      .populate("guest")
       .then((object) =>
         callback(null, {
           statusCode: 200,

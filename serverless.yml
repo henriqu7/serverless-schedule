@@ -126,10 +126,24 @@ functions:
           path: guest
           method: post
           cors: true
+  getOneGuest:
+    handler: src/handlers/guestHandler.getOne
+    events:
+      - http:
+          path: guest/{id}
+          method: get
+          cors: true
   getAllGuest:
     handler: src/handlers/guestHandler.getAll
     events:
       - http:
           path: guest
           method: get
+          cors: true
+  deleteGuest:
+    handler: src/handlers/guestHandler.delete
+    events:
+      - http:
+          path: guest/{id}
+          method: delete
           cors: true

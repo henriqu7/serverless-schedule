@@ -40,6 +40,7 @@ module.exports.getOne = (event, context, callback) => {
 
   connectToDatabase().then(() => {
     Guest.findById(event.pathParameters.id)
+      .populate("sales")
       .then((object) =>
         callback(null, {
           statusCode: 200,
@@ -67,7 +68,7 @@ module.exports.getAll = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   connectToDatabase().then(() => {
-    Guest.find()
+    Guest.find({ status: true })
       .populate("sales")
       .then((object) =>
         callback(null, {
@@ -127,7 +128,9 @@ module.exports.delete = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   connectToDatabase().then(() => {
-    Guest.findByIdAndRemove(event.pathParameters.id)
+    Guest.findByIdAndUpdate(event.pathParameters.id, {
+      status: false,
+    })
       .then((object) =>
         callback(null, {
           statusCode: 200,

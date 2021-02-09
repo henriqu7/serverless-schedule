@@ -6,7 +6,8 @@ const SaleSchema = new mongoose.Schema({
     ref: "Guest",
   },
   date: Date,
-  products: Array,
+  product: String,
+  quantity: Number,
   total_price: Number,
   status: Boolean,
 });
