@@ -49,6 +49,20 @@ functions:
           path: room
           method: post
           cors: true
+  getAllScheduleRequests:
+    handler: src/handlers/scheduleRequestHandler.getAll
+    events:
+      - http:
+          path: schedulerequest
+          method: get
+          cors: true
+  getOneScheduleRequest:
+    handler: src/handlers/scheduleRequestHandler.getOne
+    events:
+      - http:
+          path: schedulerequest/{id}
+          method: get
+          cors: true
   createScheduleRequest:
     handler: src/handlers/scheduleRequestHandler.create
     events:

@@ -53,6 +53,10 @@ module.exports.getOne = (event, context, callback) => {
       .then((object) =>
         callback(null, {
           statusCode: 200,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": true,
+          },
           body: JSON.stringify(object),
         })
       )
@@ -77,6 +81,10 @@ module.exports.getAll = (event, context, callback) => {
       .then((object) =>
         callback(null, {
           statusCode: 200,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": true,
+          },
           body: JSON.stringify(object),
         })
       )
